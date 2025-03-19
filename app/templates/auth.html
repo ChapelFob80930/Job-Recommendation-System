@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+<div class="auth-container">
+    <!-- Pills navs -->
+    <ul class="nav nav-pills nav-justified mb-3" id="auth-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab-login" data-bs-toggle="pill" href="#pills-login" role="tab"
+                aria-controls="pills-login" aria-selected="true">Login</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="tab-register" data-bs-toggle="pill" href="#pills-register" role="tab"
+                aria-controls="pills-register" aria-selected="false">Register</a>
+        </li>
+    </ul>
+    <!-- Pills navs -->
+
+    <!-- Pills content -->
+    <div class="tab-content">
+        <!-- Login Form -->
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form method="POST" action="{{ url_for('login') }}">
+                
+
+                <p class="text-center"></p>
+
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="loginEmail">Email</label>
+                    <input type="email" name="email" id="loginEmail" class="form-control" required />
+                    
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" name="password" id="loginPassword" class="form-control" required />
+                    
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+            <form method="POST" action="{{ url_for('register') }}">
+
+
+                <!-- Name input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="registerName">Name</label>
+                    <input type="text" name="name" id="registerName" class="form-control" required />
+                    
+                </div>
+
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="registerEmail">Email</label>
+                    <input type="email" name="email" id="registerEmail" class="form-control" required />
+                    
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="registerPassword">Password</label>
+                    <input type="password" name="password" id="registerPassword" class="form-control" required />
+                    
+                </div>
+
+                <!-- Confirm Password input (Fixed) -->
+                <div class="form-outline mb-4">
+                    <input type="password" name="confirm_password" id="registerConfirmPassword" class="form-control" required />
+                    <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
+            </form>
+        </div>
+    </div>
+    <!-- Pills content -->
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+#drop-area {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s ease;
+}
+
+#drop-area.highlight {
+    background-color: #f0f8ff;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.upload-btn:hover {
+    background: #0056b3;
+}
+
+#file-name {
+    margin-top: 10px;
+    font-weight: bold;
+}
