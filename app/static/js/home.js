@@ -149,3 +149,70 @@ document.getElementById("fileElem").addEventListener("change", function () {
     console.log('File name:', fileName);
     document.getElementById("file-name").textContent = fileName;
 });
+document.getElementById("recommend-btn").addEventListener("click", function () {
+    fetch("/recommend-jobs")  // Request recommendations from Flask
+        .then(response => response.json())
+        .then(data => {
+            let output = "<h2>Your Job Recommendations</h2>";
+            if (data.length === 0) {
+                output += "<p>No matching jobs found.</p>";
+            } else {
+                output += `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Job Title</th>
+                                <th>Match Score</th>
+                                <th>Missing Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                data.forEach(job => {
+                    output += `
+                        <tr>
+                            <td><img src="${job.company_logo}" alt="${job.company}" width="50"></td>
+                            <td>${job.job_title}</td>
+                            <td>${job.match_score.toFixed(2)}%</td>
+                            <td>${job.missing_skills}</td>
+                        </tr>
+                    `;
+                });
+                output += "</tbody></table>";
+            }
+            document.getElementById("recommendations").innerHTML = output;
+        })
+        .catch(error => console.error("Error fetching recommendations:", error));
+});
+document.getElementById("recommend-btn").addEventListener("click", function (event) {
+    event.preventDefault();  // Prevent default navigation
+
+    fetch("/recommend-jobs")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Recommendations:", data);
+            displayRecommendations(data); // Function to update the table
+        })
+        .catch(error => console.error("Error fetching recommendations:", error));
+});
+
+function displayRecommendations(recommendations) {
+    let tableBody = document.querySelector("#recommendations tbody");
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    if (recommendations.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='4'>No recommendations yet.</td></tr>";
+        return;
+    }
+
+    recommendations.forEach(rec => {
+        let row = `<tr>
+            <td><img src="${rec.company_logo}" alt="${rec.company}" width="50"></td>
+            <td>${rec.job_title}</td>
+            <td>${rec.match_score.toFixed(2)}%</td>
+            <td>${rec.missing_skills}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
+}

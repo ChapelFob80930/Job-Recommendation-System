@@ -21,9 +21,12 @@
         </form>
     </div>
 
+    <!-- Button to Fetch Job Recommendations -->
+    <button id="recommend-btn" class="btn btn-primary">Recommend Jobs</button>
+
     <!-- Display Job Recommendations -->
-    {% if recommendations %}
-    <div class="recommendations-section">
+    <div id="recommendations">
+        {% if recommendations %}
         <h2>Your Job Recommendations</h2>
         <table class="table">
             <thead>
@@ -32,32 +35,82 @@
                     <th>Job Title</th>
                     <th>Match Score</th>
                     <th>Missing Skills</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for rec in recommendations %}
                 <tr>
-                    <td><img src="{{ url_for('static', filename=rec.company_logo) }}" alt="{{ rec.company }}" class="company-logo"></td>
+                    <td>{{ rec.company }}</td>
                     <td>{{ rec.job_title }}</td>
                     <td>{{ "%.2f"|format(rec.match_score) }}%</td>
-                    <td>
-                        {% for skill in rec.missing_skills.split(',') %}
-                        <a href="#" class="skill-link">{{ skill.strip() }}</a>{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td><a href="{{ url_for('job_details', job_id=rec.id) }}" class="btn btn-primary">View Details</a></td>
+                    <td>{{ rec.missing_skills }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p>No recommendations yet. Upload a resume to get started.</p>
+        {% endif %}
     </div>
-    {% else %}
-    <p>No job recommendations available.</p>
-    {% endif %}
 </div>
 
+<!-- Include CSS and JavaScript -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <script src="{{ url_for('static', filename='js/home.js') }}" defer></script>
+<script>
+    document.getElementById("recommend-btn").addEventListener("click", function (event) {
+        event.preventDefault();  // Prevent default navigation
+    
+        fetch("/recommend-jobs")
+            .then(response => response.json())
+            .then(data => {
+                console.log("Recommendations:", data);  // Debugging: Check if company names exist
+                displayRecommendations(data);
+            })
+            .catch(error => console.error("Error fetching recommendations:", error));
+    });
+
+    function displayRecommendations(recommendations) {
+        let tableBody = document.querySelector("#recommendations tbody");
+        if (!tableBody) {
+            let recommendationsDiv = document.getElementById("recommendations");
+            recommendationsDiv.innerHTML = `
+                <h2>Your Job Recommendations</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Job Title</th>
+                            <th>Match Score</th>
+                            <th>Missing Skills</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            `;
+            tableBody = document.querySelector("#recommendations tbody");
+        }
+
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        if (!recommendations || recommendations.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='4'>No recommendations yet.</td></tr>";
+            return;
+        }
+
+        recommendations.forEach(rec => {
+            let companyName = rec.company || "Unknown Company"; // Ensure fallback in case of missing data
+
+            let row = `<tr>
+                <td>${companyName}</td>
+                <td>${rec.job_title}</td>
+                <td>${rec.match_score ? rec.match_score.toFixed(2) + "%" : "N/A"}</td>
+                <td>${rec.missing_skills || "None"}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+</script>
+
 
 {% endblock %}

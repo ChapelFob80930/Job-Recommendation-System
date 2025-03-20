@@ -1,39 +1,41 @@
 import io
 import PyPDF2
-import re
-from app.nlp import extract_skills, save_recommendations
+from app import db
+from app.models import UserSkill
 
-def extract_skills_from_pdf(file_stream):
+def extract_text_from_pdf(file_stream):
     """
-    Extracts predefined skills from a PDF file using regex.
+    Extracts text from a PDF file.
     """
-    try:
-        pdf_reader = PyPDF2.PdfReader(file_stream)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
+    reader = PyPDF2.PdfReader(file_stream)
+    text = " ".join([page.extract_text() or "" for page in reader.pages])
+    return text.strip()
 
-        # Extract predefined skills using regex
-        skills = re.findall(
-            r"\b(Python|Java|C\+\+|C|JavaScript|SQL|HTML|CSS|React|Node\.js|Django|Flask|TensorFlow|AWS|Azure|Docker|Kubernetes|Linux|MongoDB|Swift|Kotlin|Flutter|Salesforce|Apex|Lightning|OpenCV|Cybersecurity|WebRTC|Verilog|VHDL|FPGA|RTOS|Microcontrollers|PL/SQL|Spring Boot|MySQL|Shell Scripting)\b",
-            text,
-            re.IGNORECASE,
-        )
-        return list(set(skills))  # Return unique skills
-    except Exception as e:
-        print(f"Error extracting skills: {e}")
-        return []
+def extract_skills_from_text(text):
+    """
+    Extract skills from the extracted resume text.
+    """
+    predefined_skills = {"Python", "Java", "C++", "Django", "Flask", "Machine Learning",
+                         "Deep Learning", "SQL", "AWS", "React", "Node.js", "TensorFlow"}
 
+    words = text.split()
+    extracted_skills = [word for word in words if word in predefined_skills]
+
+    return list(set(extracted_skills))  # Remove duplicates
 
 def process_resume_and_save_recommendations(user_id, file_stream):
     """
-    Processes the uploaded resume, extracts skills, matches jobs, and saves recommendations.
+    Extracts text from a resume PDF, finds relevant skills, and saves them in the database.
     """
-    # Extract text from the uploaded PDF
-    resume_text = extract_skills_from_pdf(file_stream)
+    text = extract_text_from_pdf(file_stream)
+    skills = extract_skills_from_text(text)
 
-    # Extract skills using NLP logic
-    extracted_skills = extract_skills(resume_text)
+    if not skills:
+        raise ValueError("No skills found in the resume.")
 
-    # Save recommendations to the database
-    save_recommendations(user_id, extracted_skills)
+    # Save extracted skills in the database
+    user_skills_entry = UserSkill(user_id=user_id, skills=",".join(skills))
+    db.session.add(user_skills_entry)
+    db.session.commit()
+
+    print(f"Extracted Skills for User {user_id}: {skills}")
