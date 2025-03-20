@@ -22,7 +22,7 @@ def login():
         password = request.form['password']
         response = login_user(email, password)
         if response:
-            session['user'] = response.user.id
+            session['user'] = {'id': response.id}  # Store user id as dictionary
             return redirect(url_for('home'))
         else:
             flash("Invalid credentials", "danger")

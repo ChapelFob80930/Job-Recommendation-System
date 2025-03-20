@@ -20,6 +20,41 @@
             <button type="submit" class="upload-button">Upload Resume</button>
         </form>
     </div>
+
+    <!-- Display Job Recommendations -->
+    {% if recommendations %}
+    <div class="recommendations-section">
+        <h2>Your Job Recommendations</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Job Title</th>
+                    <th>Match Score</th>
+                    <th>Missing Skills</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rec in recommendations %}
+                <tr>
+                    <td><img src="{{ url_for('static', filename=rec.company_logo) }}" alt="{{ rec.company }}" class="company-logo"></td>
+                    <td>{{ rec.job_title }}</td>
+                    <td>{{ "%.2f"|format(rec.match_score) }}%</td>
+                    <td>
+                        {% for skill in rec.missing_skills.split(',') %}
+                        <a href="#" class="skill-link">{{ skill.strip() }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td><a href="{{ url_for('job_details', job_id=rec.id) }}" class="btn btn-primary">View Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No job recommendations available.</p>
+    {% endif %}
 </div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
