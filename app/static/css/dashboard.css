@@ -5,6 +5,7 @@
     justify-content: center;
     gap: 20px;
     padding: 20px;
+    position: relative;
 }
 
 /* Job Card with Split Layout */
@@ -18,6 +19,14 @@
     flex-direction: column;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    user-select: none; /* Prevent text selection during swipe */
+    touch-action: none; /* Disable browser handling of all panning and zooming gestures */
+    cursor: grab;
+    will-change: transform; /* Optimize for animations */
+}
+
+.job-card:active {
+    cursor: grabbing;
 }
 
 /* Image Section */
@@ -55,6 +64,7 @@
     object-fit: cover; /* Cover the entire area */
     object-position: center;
 }
+
 /* Match Score Bar */
 .match-score-bar {
     width: 100%;
@@ -80,6 +90,7 @@
     font-size: 14px;
     color: #333;
 }
+
 /* Details Section */
 .job-details {
     height: 40%;
@@ -96,6 +107,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    position: relative;
 }
 
 /* Buttons */
@@ -103,20 +115,134 @@
     background-color: #ff4d4d;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 15px;
     font-size: 20px;
     border-radius: 50%;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .accept-btn {
     background-color: #4CAF50;
 }
 
-/* Button Hover Effect */
+/* Button Hover and Active Effects */
 .reject-btn:hover, .accept-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+}
+
+.reject-btn:active, .accept-btn:active {
+    transform: scale(0.95);
+}
+
+/* Swipe Indicator */
+.swipe-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10%;
+    width: 80%;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.swipe-progress {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+.progress-left, .progress-right {
+    width: 0%;
+    height: 100%;
+    transition: width 0.2s ease;
+}
+
+.progress-left {
+    background-color: #ff4d4d;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.progress-right {
+    background-color: #4CAF50;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.swipe-direction {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-top: 5px;
+}
+
+.direction-left, .direction-right {
+    font-size: 14px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+/* Undo Button */
+.undo-btn {
+    position: absolute;
+    bottom: 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+}
+
+.undo-btn:hover {
+    transform: scale(1.05);
+    background-color: #0b7dda;
+}
+
+.undo-btn:active {
+    transform: scale(0.95);
+}
+
+/* Reset Button (when no more jobs) */
+.reset-btn {
+    margin-top: 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.reset-btn:hover {
+    background-color: #0b7dda;
+}
+
+/* No Jobs Message */
+.no-jobs {
+    font-size: 1.5rem;
+    color: #666;
+    text-align: center;
+    margin: 2rem 0;
 }
 
 /* Responsive Design */
@@ -125,8 +251,43 @@
         width: 95vw;
         height: 75vh;
     }
+    
     .reject-btn, .accept-btn {
+        width: 40px;
+        height: 40px;
         font-size: 16px;
-        padding: 8px 16px;
     }
+    
+    .undo-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Animations for card transitions */
+@keyframes swipeLeft {
+    from { transform: translateX(0) rotate(0); }
+    to { transform: translateX(-150%) rotate(-30deg); }
+}
+
+@keyframes swipeRight {
+    from { transform: translateX(0) rotate(0); }
+    to { transform: translateX(150%) rotate(30deg); }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.swipe-left {
+    animation: swipeLeft 0.5s forwards;
+}
+
+.swipe-right {
+    animation: swipeRight 0.5s forwards;
+}
+
+.zoom-in {
+    animation: zoomIn 0.3s forwards;
 }
