@@ -10,8 +10,9 @@ def register():
         response = create_user(email, password)
         if response:
             flash("Account created successfully!", "success")
-            return redirect(url_for('login'))
-        flash("Error creating account", "danger")
+            # Removed redirect(url_for('login'))
+        else:
+            flash("Error creating account", "danger")
     return render_template('auth.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -22,8 +23,9 @@ def login():
         response = login_user(email, password)
         if response:
             session['user'] = response.user.id
-            return redirect(url_for('dashboard'))
-        flash("Invalid credentials", "danger")
+            return redirect(url_for('home'))
+        else:
+            flash("Invalid credentials", "danger")
     return render_template('auth.html')
 
 @app.route('/logout')

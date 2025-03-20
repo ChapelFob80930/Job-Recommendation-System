@@ -1,0 +1,96 @@
+/* upload.css */
+
+.home-page {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.hero-section {
+    background-color: #e6f7ff; /* Light blue background */
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.hero-title {
+    font-size: 2.5em;
+    color: #0073b1; /* LinkedIn blue */
+    margin-bottom: 15px;
+}
+
+.hero-subtitle {
+    font-size: 1.2em;
+    color: #666;
+    line-height: 1.6;
+}
+
+.upload-section {
+    text-align: center;
+}
+
+#drop-area {
+    border: 2px dashed #bbb;
+    border-radius: 8px;
+    padding: 40px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.drop-message {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.browse-button {
+    padding: 12px 25px;
+    background-color: #0073b1; /* LinkedIn blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.browse-button:hover {
+    background-color: #005a87;
+}
+
+.file-name {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* upload.css */
+
+.upload-button {
+    display: block; /* Make it a block-level element */
+    margin: 20px auto; /* Center horizontally and add some top margin */
+    padding: 14px 30px;
+    background-color: #28a745; /* Green upload button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2em;
+    }
+
+    #drop-area {
+        padding: 30px;
+    }
+}

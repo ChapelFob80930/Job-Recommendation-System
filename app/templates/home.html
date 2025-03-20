@@ -1,21 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to AI-Powered Job Matching</h1>
-<p>Upload your resume and get job recommendations!</p>
 
-<!-- Drag & Drop Upload Box -->
-<form id="upload-form" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
-    <div id="drop-area">
-        <p>Drag & Drop your PDF here or</p>
-        <input type="file" id="fileElem" name="resume" accept=".pdf" required hidden>
-        <label for="fileElem" class="upload-btn">Browse Files</label>
-        <p id="file-name"></p>
+<div class="home-page">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Find Your Dream Job with AI-Powered Matching</h1>
+            <p class="hero-subtitle">Upload your resume and let our intelligent system connect you with the best opportunities.</p>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Upload Resume</button>
-</form>
 
-<!-- Linking CSS and JavaScript -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
-<script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+    <div class="upload-section">
+        <form id="upload-form" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+            <div id="drop-area">
+                <p class="drop-message">Drag & Drop your PDF here or</p>
+                <input type="file" id="fileElem" name="resume" accept=".pdf" required hidden>
+                <label for="fileElem" class="browse-button">Browse Files</label>
+                <p id="file-name" class="file-name"></p>
+            </div>
+            <button type="submit" class="upload-button">Upload Resume</button>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<script src="{{ url_for('static', filename='js/home.js') }}" defer></script>
 
 {% endblock %}

@@ -1,0 +1,105 @@
+/* job_details.css */
+
+.job-detail-page {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.job-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.company-logo {
+    max-width: 100px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 8px;
+}
+
+.job-header-content {
+    flex-grow: 1;
+}
+
+.job-title {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: #0073b1; /* LinkedIn blue */
+}
+
+.company-name {
+    font-size: 1.3em;
+    color: #666;
+}
+
+.job-content {
+    margin-bottom: 30px;
+}
+
+.job-section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+.section-content {
+    line-height: 1.7;
+}
+
+.section-list {
+    list-style-type: disc;
+    margin-left: 25px;
+    line-height: 1.7;
+}
+
+.apply-button {
+    padding: 12px 25px;
+    background-color: #0073b1; /* LinkedIn blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.apply-button:hover {
+    background-color: #005a87;
+}
+
+.apply-message {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-detail-page {
+        padding: 20px;
+    }
+
+    .company-logo {
+        max-width: 80px;
+    }
+
+    .job-title {
+        font-size: 1.8em;
+    }
+
+    .section-title {
+        font-size: 1.3em;
+    }
+}

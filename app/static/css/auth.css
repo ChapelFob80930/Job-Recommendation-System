@@ -1,81 +1,69 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+/* auth.css */
 
-/* Form Container */
 .auth-container {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
 }
 
-/* Form Header */
-.auth-container h2 {
+.auth-tabs {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
-    color: #333;
 }
 
-/* Input Fields */
-.auth-container input[type="email"],
-.auth-container input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+.auth-tab {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
 }
 
-/* Buttons */
-.auth-container button {
-    width: 100%;
-    padding: 10px;
+.auth-tab.active {
     background-color: #007bff;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s;
 }
 
-.auth-container button:hover {
-    background-color: #0056b3;
+.auth-tab:hover {
+    background-color: #e0e0e0;
 }
 
-/* Flash Messages */
-.flash-messages {
-    margin-bottom: 15px;
+.auth-forms {
+    position: relative;
+    overflow: hidden;
 }
 
-.flash-messages .success {
-    color: green;
-    font-size: 14px;
+.auth-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(100%);
 }
 
-.flash-messages .danger {
-    color: red;
-    font-size: 14px;
+.auth-form.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+.btn-block {
+    display: block; /* Make it a block-level element */
+    width: auto; /* Allow the button to take its natural width */
+    margin: 10px auto; /* Center horizontally and add some top margin */
+    padding: 10px 20px; /* Adjust padding as needed */
 }
 
-/* Links */
-.auth-container a {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #007bff;
-}
 
-.auth-container a:hover {
-    text-decoration: underline;
+@media (max-width: 480px) {
+    .auth-container {
+        width: 95%;
+    }
 }

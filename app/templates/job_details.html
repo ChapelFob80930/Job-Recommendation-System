@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="job-detail-page">
+    <div class="job-header">
+        <img src="{{ url_for('static', filename=job.logo) }}" alt="{{ job.company }} Logo" class="company-logo">
+        <div class="job-header-content">
+            <h1 class="job-title">{{ job.position }}</h1>
+            <h2 class="company-name">{{ job.company }}</h2>
+        </div>
+    </div>
+
+    <div class="job-content">
+        <div class="job-section">
+            <h3 class="section-title">Job Description</h3>
+            <p class="section-content">{{ job.description }}</p>
+        </div>
+
+        <div class="job-section">
+            <h3 class="section-title">Requirements</h3>
+            <ul class="section-list">
+                {% for req in job.requirements %}
+                <li>{{ req }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="job-section">
+            <h3 class="section-title">Apply</h3>
+            <button id="apply-btn" class="apply-button">Apply Now</button>
+            <p id="apply-message" class="apply-message" style="display: none;">Application submitted!</p>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/job_details.css') }}">
+<script src="{{ url_for('static', filename='js/job_details.js') }}"></script>
+
+{% endblock %}
