@@ -74,11 +74,56 @@ document.addEventListener("DOMContentLoaded", function () {
                     nextCard.style.transform = "scale(1)";
                     nextCard.style.opacity = "1";
                 } else {
-                    document.getElementById("job-container").innerHTML = "<p class='no-jobs'>No more jobs available.</p><button id='reset-jobs' class='reset-btn'>Start Over</button>";
-                    document.getElementById('reset-jobs').addEventListener('click', resetJobs);
+                    showNoMoreJobsMessage();
                 }
             }, 500);
+        } else {
+            showNoMoreJobsMessage();
         }
+    }
+    
+    // Function to show no more jobs message
+    function showNoMoreJobsMessage() {
+        // Remove any existing undo button
+        const undoButton = document.getElementById('undo-swipe');
+        if (undoButton) {
+            undoButton.remove();
+        }
+        
+        // Create the no more jobs container
+        const noJobsContainer = document.createElement('div');
+        noJobsContainer.className = 'no-jobs-container';
+        
+        // Add content to the container
+        noJobsContainer.innerHTML = `
+            <div class="no-jobs-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h2 class="no-jobs-title">No More Recommended Jobs</h2>
+            <p class="no-jobs-message">You've reviewed all available job recommendations.</p>
+            <button id="reset-jobs" class="reset-btn">Start Over</button>
+            <button id="search-more-jobs" class="search-more-btn">Search More Jobs</button>
+        `;
+        
+        // Remove all existing content and append the no jobs message
+        const jobContainer = document.getElementById("job-container");
+        jobContainer.innerHTML = '';
+        jobContainer.appendChild(noJobsContainer);
+        
+        // Add event listeners to the buttons
+        document.getElementById('reset-jobs').addEventListener('click', resetJobs);
+        document.getElementById('search-more-jobs').addEventListener('click', () => {
+            window.location.href = "/jobs/search";  // Adjust this URL as needed
+        });
+        
+        // Add animation class
+        setTimeout(() => {
+            noJobsContainer.classList.add('show');
+        }, 10);
     }
     
     // Function to undo the last swipe
@@ -120,6 +165,10 @@ document.addEventListener("DOMContentLoaded", function () {
         currentIndex = 0;
         swipeHistory = [];
         
+        // Clear the no jobs message
+        const jobContainer = document.getElementById("job-container");
+        jobContainer.innerHTML = '';
+        
         // Reset all cards
         jobWrappers.forEach((wrapper, index) => {
             const card = wrapper.querySelector('.job-card');
@@ -127,14 +176,23 @@ document.addEventListener("DOMContentLoaded", function () {
             card.style.transform = "translateX(0) rotate(0)";
             card.style.opacity = "1";
             wrapper.style.display = index === 0 ? "flex" : "none";
+            jobContainer.appendChild(wrapper);
         });
         
-        // Replace any "no more jobs" message
-        if (document.querySelector('.no-jobs')) {
-            document.getElementById("job-container").innerHTML = "";
-            jobWrappers.forEach(wrapper => {
-                document.getElementById("job-container").appendChild(wrapper);
-            });
+        // Add the undo button back
+        addUndoButton();
+    }
+
+    // Function to add the undo button
+    function addUndoButton() {
+        // Only add if it doesn't exist
+        if (!document.getElementById('undo-swipe')) {
+            const undoButton = document.createElement('button');
+            undoButton.id = 'undo-swipe';
+            undoButton.className = 'undo-btn';
+            undoButton.innerHTML = '↩ Undo';
+            undoButton.addEventListener('click', undoLastSwipe);
+            document.getElementById('job-container').appendChild(undoButton);
         }
     }
 
@@ -336,10 +394,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     // Add undo button to the container
-    const undoButton = document.createElement('button');
-    undoButton.id = 'undo-swipe';
-    undoButton.className = 'undo-btn';
-    undoButton.innerHTML = '↩ Undo';
-    undoButton.addEventListener('click', undoLastSwipe);
-    document.getElementById('job-container').appendChild(undoButton);
+    addUndoButton();
 });
