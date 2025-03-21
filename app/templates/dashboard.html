@@ -16,13 +16,11 @@
         style="background-image: url('{{ url_for('static', filename='logo/' + job.company | lower | replace(' ', '_') + '.jpg') }}');"
       >
         <div class="overlay">
-          <div class="company-logo">
-            <img
-              src="{{ url_for('static', filename=job.logo) }}"
-              alt="{{ job.company }} Logo"
-              class="company-logo"
-            />
-          </div>
+          <!-- Using background-image for the logo instead of an img tag with alt text -->
+          <div
+            class="company-logo"
+            style="background-image: url('{{ url_for('static', filename=job.logo) }}');"
+          ></div>
         </div>
       </div>
       <div class="job-details">

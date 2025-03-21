@@ -50,20 +50,18 @@
     height: 100%;
     border-radius: 0;
     background: rgba(0, 0, 0, 0.6); /* Add a semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Company Logo Styling (Now covers the whole image section) */
+/* Company Logo Styling (Changed to use background-image) */
 .company-logo {
-    width: 100%; /* Cover the entire width */
-    height: 100%; /* Cover the entire height */
-    overflow: hidden;
-}
-
-.company-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Cover the entire area */
-    object-position: center;
+    width: 70%; /* Reduced width to make it appear more like a logo */
+    height: 70%; /* Reduced height to make it appear more like a logo */
+    background-size: contain; /* Use contain to make sure the full logo is visible */
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Match Score Bar */
