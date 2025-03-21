@@ -218,6 +218,9 @@
 .undo-btn:active {
     transform: scale(0.95);
 }
+.undo-btn {
+    padding: 12px 24px; /* Increased padding for better spacing */
+}
 
 /* No More Jobs Container */
 .no-jobs-container {

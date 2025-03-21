@@ -61,6 +61,18 @@
     padding: 10px 20px; /* Adjust padding as needed */
 }
 
+#undo-swipe {
+    position: fixed; /* Ensures it's placed relative to the viewport */
+    bottom: 20px; /* Adjust spacing from the bottom */
+    left: 50%; /* Centers the button */
+    transform: translateX(-50%); /* Ensures perfect centering */
+    z-index: 1000; /* Ensures it's above other elements */
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 @media (max-width: 480px) {
     .auth-container {

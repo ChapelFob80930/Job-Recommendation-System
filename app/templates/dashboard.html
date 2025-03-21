@@ -1,5 +1,4 @@
-{% extends "base.html" %} 
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/dashboard.css') }}"
@@ -8,8 +7,7 @@
 <h1 class="text-center text-3xl font-bold my-5">Job Recommendations</h1>
 
 <div id="job-container">
-  {% for job in jobs %} 
-  {% if job.match_score > 10 %}
+  {% for job in jobs %} {% if job.match_score > 10 %}
   <div class="job-wrapper">
     <button class="reject-btn" data-id="{{ job.id }}">&lt;</button>
     <div class="job-card" data-id="{{ job.id }}">
@@ -18,6 +16,7 @@
         style="background-image: url('{{ url_for('static', filename='logo/' + job.company | lower | replace(' ', '_') + '.jpg') }}');"
       >
         <div class="overlay">
+          <!-- Using background-image for the logo instead of an img tag with alt text -->
           <div
             class="company-logo"
             style="background-image: url('{{ url_for('static', filename=job.logo) }}');"
@@ -25,8 +24,7 @@
         </div>
       </div>
       <div class="job-details">
-        <h3>{{ job.company }}</h3> <!-- Explicitly displaying company name -->
-        <p><strong>Company:</strong> {{ job.company }}</p> <!-- Added this line -->
+        <h3>{{ job.company }}</h3>
         <p><strong>Position:</strong> {{ job.position }}</p>
         <p><strong>Description:</strong> {{ job.description }}</p>
         <p>
@@ -43,8 +41,7 @@
     </div>
     <button class="accept-btn" data-id="{{ job.id }}">&gt;</button>
   </div>
-  {% endif %} 
-  {% endfor %}
+  {% endif %} {% endfor %}
 </div>
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
