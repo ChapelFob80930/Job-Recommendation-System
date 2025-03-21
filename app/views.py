@@ -27,14 +27,33 @@ def dashboard():
         return redirect(url_for('login'))
 
     user_id = session['user']['id']
-    
-    # Fetch match_score from JobRecommendation along with jobs
-    jobs = db.session.query(JobRecommendation.job_title, JobRecommendation.match_score).filter_by(user_id=user_id).all()
 
-    # Convert to list of dictionaries for Jinja rendering
-    jobs = [{"company": job.job_title, "match_score": job.match_score} for job in jobs]
+    # Fetch job recommendations for the user
+    user_recommendations = db.session.query(
+        JobRecommendation.job_title,
+        JobRecommendation.company,
+        JobRecommendation.match_score
+    ).filter_by(user_id=user_id).all()
 
-    return render_template('dashboard.html', jobs=jobs)
+    # Convert to list of dictionaries
+    recommended_jobs = []
+    for rec in user_recommendations:
+        # Find the job details from the jobs list
+        job_details = next((job for job in jobs if job["company"].lower() == rec.company.lower() and job["position"] == rec.job_title), None)
+
+        if job_details:
+            recommended_jobs.append({
+                "company": rec.company,
+                "job_title": rec.job_title,
+                "match_score": rec.match_score,
+                "position": job_details["position"],
+                "description": job_details["description"],
+                "requirements": job_details["requirements"],
+                "logo": job_details["logo"]
+            })
+
+    return render_template('dashboard.html', jobs=recommended_jobs)
+
 
 
 

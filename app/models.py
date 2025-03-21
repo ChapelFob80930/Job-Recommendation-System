@@ -36,6 +36,7 @@ def login_user(email, password):
 class JobRecommendation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    company = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
     match_score = db.Column(db.Float, nullable=False)
     missing_skills = db.Column(db.String(255), nullable=True)

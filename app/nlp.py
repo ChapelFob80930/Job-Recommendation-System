@@ -49,6 +49,7 @@ def fetch_skills_and_recommend_jobs(user_id):
     for rec in recommendations:
         new_recommendation = JobRecommendation(
             user_id=user_id,
+            company=rec["company"], 
             job_title=rec["job_title"],
             match_score=rec["match_score"],
             missing_skills=rec["missing_skills"]
