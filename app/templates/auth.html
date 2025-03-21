@@ -39,18 +39,29 @@
         <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
             <form method="POST" action="{{ url_for('register') }}">
                 <div class="form-outline mb-4">
+                    <label class="form-label" for="registerUsername">Username</label>
+                    <input type="text" name="username" id="registerUsername" class="form-control" required />
+                </div>
+        
+                <div class="form-outline mb-4">
                     <label class="form-label" for="registerEmail">Email</label>
                     <input type="email" name="email" id="registerEmail" class="form-control" required />
                 </div>
-
+        
                 <div class="form-outline mb-4">
                     <label class="form-label" for="registerPassword">Password</label>
                     <input type="password" name="password" id="registerPassword" class="form-control" required />
                 </div>
-
+        
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="registerConfirmPassword" class="form-control" required />
+                </div>
+        
                 <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
             </form>
         </div>
+        
     </div>
 </div>
 

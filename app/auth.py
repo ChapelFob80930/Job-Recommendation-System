@@ -5,15 +5,22 @@ from app.models import create_user, login_user
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        response = create_user(email, password)
-        if response:
-            flash("Account created successfully!", "success")
-            # Removed redirect(url_for('login'))
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            flash("Passwords do not match", "danger")
         else:
-            flash("Error creating account", "danger")
+            response = create_user(username, email, password)
+            if response:
+                flash("Account created successfully!", "success")
+            else:
+                flash("Error creating account. Username or email already exists.", "danger")
+
     return render_template('auth.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

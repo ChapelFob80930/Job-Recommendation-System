@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             // Redirect after animation completes
             setTimeout(() => {
-                window.location.href = "/job/" + jobId; // Accept and Redirect
+                window.location.href = "/job_details/" + jobId; // Accept and Redirect
             }, 500);
         });
         

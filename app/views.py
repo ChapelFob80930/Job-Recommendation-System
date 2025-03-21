@@ -21,12 +21,17 @@ def home():
         recommendations = JobRecommendation.query.filter_by(user_id=user_id).all()
     return render_template('home.html', recommendations=recommendations)
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
 
     user_id = session['user']['id']
+    logging.debug(f"User ID: {user_id}")
 
     # Fetch job recommendations for the user
     user_recommendations = db.session.query(
@@ -35,13 +40,24 @@ def dashboard():
         JobRecommendation.match_score
     ).filter_by(user_id=user_id).all()
 
+    logging.debug(f"User Recommendations: {user_recommendations}")
+
     # Convert to list of dictionaries
     recommended_jobs = []
     for rec in user_recommendations:
+        logging.debug(f"Processing recommendation: {rec.job_title} at {rec.company}")
+
+        # Check if `jobs` list exists and contains data
+        if 'jobs' not in globals() or not isinstance(jobs, list):
+            logging.error("The 'jobs' list is not defined or is not a list.")
+            flash("Job data is missing.", "danger")
+            return redirect(url_for('dashboard'))
+
         # Find the job details from the jobs list
-        job_details = next((job for job in jobs if job["company"].lower() == rec.company.lower() and job["position"] == rec.job_title), None)
+        job_details = next((job for job in jobs if job.get("company", "").lower() == rec.company.lower() and job.get("position", "") == rec.job_title), None)
 
         if job_details:
+            logging.debug(f"Job found: {job_details}")
             recommended_jobs.append({
                 "company": rec.company,
                 "job_title": rec.job_title,
@@ -51,14 +67,14 @@ def dashboard():
                 "requirements": job_details["requirements"],
                 "logo": job_details["logo"]
             })
+        else:
+            logging.warning(f"No job details found for: {rec.job_title} at {rec.company}")
 
+    logging.debug(f"Recommended Jobs: {recommended_jobs}")
+    
     return render_template('dashboard.html', jobs=recommended_jobs)
 
-
-
-
-
-@app.route('/job/<int:job_id>')
+@app.route('/job_details/<int:job_id>')
 def job_details(job_id):
     job = next((job for job in jobs if job["id"] == job_id), None)
     if not job:
